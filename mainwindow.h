@@ -1,8 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "paintwidget.h"
-#include "textwidget.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
 
@@ -27,6 +25,8 @@ private slots:
 	void on_showbutton_clicked();
 	void on_rewritebutton_clicked();
 	void on_jumpbutton_clicked();
+	void on_superscript_clicked();
+	void on_subscript_clicked();
 
 private:
 	Ui::MainWindow *ui;

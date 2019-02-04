@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "paintwidget.h"
 #include "textwidget.h"
+#include "latexcode.h"
 #include "Tex2Img.h"
 #include "ui_mainwindow.h"
 #include <cstdlib>
@@ -90,6 +91,20 @@ void MainWindow::on_rewritebutton_clicked()
 void MainWindow::on_jumpbutton_clicked()
 {
 	ui->textwidget->jump();
+}
+
+void MainWindow::on_superscript_clicked()
+{
+	ui->textwidget->insert(cnt_code - 1);
+	ui->paintwidget->clear();
+	scene_update();
+}
+
+void MainWindow::on_subscript_clicked()
+{
+	ui->textwidget->insert(cnt_code - 2);
+	ui->paintwidget->clear();
+	scene_update();
 }
 
 void MainWindow::scene_update()

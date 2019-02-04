@@ -20,7 +20,7 @@ TextWidget::TextWidget(QWidget *parent) : QWidget(parent)
 	editor->setMarginType(0, QsciScintilla::NumberMargin);
 	editor->setMarginLineNumbers(0, true);
 	editor->setMarginWidth(0, 25);
-	editor->resize(QSize(800, 600));
+	editor->resize(QSize(840, 320));
 	editor->ensureCursorVisible();
 	editor->setWrapMode(QsciScintilla::WrapWord);
 	editor->setAutoCompletionSource(QsciScintilla::AcsAll);

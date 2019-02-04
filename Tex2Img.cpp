@@ -41,7 +41,7 @@ void Tex2Img::convert_offline()
 		return;
 	}
 	pArgs = PyTuple_New(1);
-	std::string t = R"\sum_{i=1}^n \sin{\pi} = 0";
+	std::string t = R"(\sum_{i=1}^n \sin{\pi} = 0)";
 	PyTuple_SetItem(pArgs, 0, Py_BuildValue("s", t));
 	PyEval_CallObject(pFunc, pArgs);
 	Py_DECREF(pArgs);

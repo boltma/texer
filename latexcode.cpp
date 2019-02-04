@@ -22,5 +22,9 @@ LatexCode latex_code[] = {
 {"/ ", std::vector<int> {}},
 {"\\sqrt{} ", std::vector<int> {2}},
 {"\\sum_{}^{} ", std::vector<int> {2, 3}},
-{"\\times ", std::vector<int> {}}
+{"\\times ", std::vector<int> {}},
+{"_{}", std::vector<int> {1}},
+{"^{}", std::vector<int> {1}}
 };
+
+int cnt_code = sizeof(latex_code) / sizeof(LatexCode);

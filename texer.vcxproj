@@ -66,12 +66,12 @@
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\include;C:\Boost\boost_1_69_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,8 +95,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\libs\python37.lib;$(QTDIR)\lib\qscintilla2_qt5.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\ProgramC\lib\QScintilla_gpl-2.10.8\Qt4Qt5\release;C:\QT\QT5.12.0\5.12.0\MSVC2017\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(QTDIR)\lib\qscintilla2_qt5.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Core.lib;$(QTDIR)\lib\qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -154,8 +154,8 @@
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\libs\python37.lib;C:\Users\mxy\AppData\Local\Programs\Python\Python37-32\libs\python37_d.lib;$(QTDIR)\lib\qscintilla2_qt5d.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;C:\ProgramC\lib\QScintilla_gpl-2.10.8\Qt4Qt5\debug;C:\QT\QT5.12.0\5.12.0\MSVC2017\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(QTDIR)\lib\qscintilla2_qt5d.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -1,13 +1,11 @@
 #include "textwidget.h"
 #include "latexcode.h"
 #include <QString>
-#include <iostream>
 
 TextWidget::TextWidget(QWidget *parent) : QWidget(parent)
 {
-	last_text = "";
-	cursor = last_cursor = 0;
-	line = last_line = 0;
+	cursor = line = 0;
+	line_stack.push(0);
 	cursor_stack.push(0);
 	editor = new QsciScintilla(this);
 	lexer = new QsciLexerTeX;
@@ -26,6 +24,9 @@ TextWidget::TextWidget(QWidget *parent) : QWidget(parent)
 	editor->setAutoCompletionSource(QsciScintilla::AcsAll);
 	editor->setAutoCompletionCaseSensitivity(true);
 	editor->setAutoCompletionThreshold(1);
+
+	connect(this->editor, SIGNAL(cursorPositionChanged(int, int)), this, SLOT(cursormoved()));
+	connect(this->editor, SIGNAL(textChanged()), this, SLOT(initialize()));
 }
 
 TextWidget::~TextWidget()
@@ -35,28 +36,41 @@ TextWidget::~TextWidget()
 	delete editor;
 }
 
-void TextWidget::mousePressEvent(QMouseEvent *event)
+void TextWidget::cursormoved()
 {
-	if (event->button() == Qt::LeftButton)
+	int temp_line, temp_cursor;
+	editor->getCursorPosition(&temp_line, &temp_cursor);
+	if ((line != temp_line || cursor != temp_cursor) && initialized)
 	{
-		std::cout << "Hello, world" << std::endl;
-		while (!nest_stack.empty() || !code_stack.empty() || !cursor_stack.empty())
-		{
+		while (!nest_stack.isEmpty())
 			nest_stack.pop();
+		while (!code_stack.isEmpty())
 			code_stack.pop();
+		while (!line_stack.isEmpty())
+			line_stack.pop();
+		while (!cursor_stack.isEmpty())
 			cursor_stack.pop();
-		}
 		editor->getCursorPosition(&line, &cursor);
+		line_stack.push(line);
 		cursor_stack.push(cursor);
 	}
+}
+
+void TextWidget::initialize()
+{
+	if (!initialized)
+		initialized = true;
 }
 
 void TextWidget::clear()
 {
 	editor->clear();
-	last_text = "";
-	cursor = last_cursor = 0;
-	line = last_line = 0;
+	cursor = line = 0;
+	while (!line_stack.isEmpty())
+		line_stack.pop();
+	while (!cursor_stack.isEmpty())
+		cursor_stack.pop();
+	line_stack.push(0);
 	cursor_stack.push(0);
 }
 
@@ -71,33 +85,42 @@ void TextWidget::insert(const int i)
 		back_length += k;
 	}
 	editor->insert(code);
-	last_cursor = cursor;
-	last_line = line;
 	cursor += code.length() - back_length;
 	cursor_stack.push(cursor);
+	line_stack.push(line);
 	editor->setCursorPosition(line, cursor);
 }
 
 void TextWidget::undo()
 {
-	if (editor->isUndoAvailable())
+	if (!code_stack.isEmpty())
 	{
-		editor->undo();
-		if (!code_stack.empty())
+		int i = code_stack.pop();
+		if (i == -1)
 		{
-			int i = code_stack.top();
-			code_stack.pop();
-			for (auto k : latex_code[i].nest)
-			{
-				nest_stack.pop();
-			}
+			int last_cursor = cursor_stack.isEmpty() ? 0 : cursor_stack.top();
+			nest_stack.push(cursor - last_cursor);
 		}
-		cursor_stack.pop();
-		if (!cursor_stack.empty())
-			cursor = cursor_stack.top();
-		else cursor = 0;
-		editor->setCursorPosition(line, cursor);
+		else
+		{
+			for (auto k : latex_code[i].nest)
+				if (!nest_stack.isEmpty())
+					nest_stack.pop();
+			if (editor->isUndoAvailable())
+				editor->undo();
+		}
 	}
+	cursor_stack.pop();
+	if (!cursor_stack.isEmpty())
+		cursor = cursor_stack.top();
+	else
+		cursor = 0;
+	line_stack.pop();
+	if (!line_stack.isEmpty())
+		line = line_stack.top();
+	else
+		line = 0;
+	editor->setCursorPosition(line, cursor);
 }
 
 void TextWidget::append(const QString &s)
@@ -112,11 +135,13 @@ QString TextWidget::text() const
 
 void TextWidget::jump()
 {
-	if (nest_stack.empty())
+	code_stack.push(-1);
+	if (nest_stack.isEmpty())
 		return;
 	int i = nest_stack.top();
 	nest_stack.pop();
 	cursor += i;
 	cursor_stack.push(cursor);
+	line_stack.push(line);
 	editor->setCursorPosition(line, cursor);
 }

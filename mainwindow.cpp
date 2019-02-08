@@ -1,3 +1,4 @@
+#include <Python.h>
 #include "mainwindow.h"
 #include "paintwidget.h"
 #include "textwidget.h"
@@ -5,7 +6,7 @@
 #include "Tex2Img.h"
 #include "ui_mainwindow.h"
 #include <cstdlib>
-#include <fstream>
+#include <QDebug>
 #include <QFile>
 #include <QDir>
 #include <QPixmap>
@@ -35,12 +36,58 @@ void MainWindow::on_clearbutton_clicked()
 
 void MainWindow::on_recbutton_clicked()
 {
-	//ui->plainTextEdit->appendPlainText("Hello");
-	system(R"(set path=Rec;%PATH%)");
-	system(R"(python "recognize.py" > tempresult.txt)");
-	std::fstream f("tempresult.txt");
 	int label;
-	f >> label;
+	try
+	{
+		PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
+		Py_Initialize();
+		if (!Py_IsInitialized())
+		{
+			return;
+		}
+		pName = PyUnicode_DecodeFSDefault("Recognize");
+		pModule = PyImport_Import(pName);
+		PyErr_Print();
+		if (pModule == NULL)
+		{
+			PyErr_Print();
+			std::exit(100);
+		}
+		Py_DECREF(pName);
+		pFunc = PyObject_GetAttrString(pModule, "recognize");
+		Py_DECREF(pModule);
+		PyErr_Print();
+		if (!PyCallable_Check(pFunc))
+		{
+			return;
+		}
+		pArgs = PyTuple_New(0);
+		pValue = PyEval_CallObject(pFunc, pArgs);
+		label = PyLong_AsLong(pValue);
+		Py_DECREF(pValue);
+		Py_DECREF(pArgs);
+		Py_DECREF(pFunc);
+		PyErr_Print();
+		Py_Finalize();
+	}
+	catch (...)
+	{
+		qDebug() << "Error embedding python in!" << endl;
+		try
+		{
+			system(R"(set path=Rec;%PATH%)");
+			system(R"(python "recognize.py" > tempresult.txt)");
+			QFile file("tempresult.txt");
+			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+				return;
+			QTextStream in(&file);
+			in >> label;
+		}
+		catch (...)
+		{
+			qDebug() << "Error calling python!" << endl;
+		}
+	}
 	ui->textwidget->insert(label);
 	ui->paintwidget->clear();
 	scene_update();
@@ -49,7 +96,6 @@ void MainWindow::on_recbutton_clicked()
 void MainWindow::on_copybutton_clicked()
 {
 	QApplication::clipboard()->setPixmap(QPixmap("tmp.png"));
-	// Tex2Img::Tex2Img("", true);
 }
 
 void MainWindow::on_databutton_clicked()

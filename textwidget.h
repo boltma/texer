@@ -2,12 +2,11 @@
 #define TEXTWIDGET_H
 
 #include <QWidget>
+#include <QStack>
 #include <QString>
 #include <Qsci/qsciscintilla.h>
 #include <Qsci/qscilexertex.h>
 #include <Qsci/qsciapis.h>
-#include <stack>
-#include <string>
 
 class TextWidget : public QWidget
 {
@@ -23,21 +22,21 @@ public:
 	void jump();
 	QString text() const;
 
-protected:
-	void mousePressEvent(QMouseEvent *);
+private slots:
+	void cursormoved();
+	void initialize();
 
 private:
 	QsciScintilla *editor;
 	QsciLexerTeX *lexer;
 	QsciAPIs *apis;
-	std::stack<int> nest_stack;
-	std::stack<int> code_stack;
-	std::stack<int> cursor_stack;
+	QStack<int> nest_stack;
+	QStack<int> code_stack;
+	QStack<int> line_stack;
+	QStack<int> cursor_stack;
 	int line;
 	int cursor;
-	int last_line;
-	int last_cursor;
-	std::string last_text;
+	bool initialized = false;
 };
 
 #endif // TEXTWIDGET_H

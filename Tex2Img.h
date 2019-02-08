@@ -10,9 +10,7 @@ public:
 
 private:
 	const QString &s;
-	bool flag = false; // flag = true if connected to Internet, flag = false if python and latex environment exists
-	void convert_online();
-	void convert_offline();
+	bool flag = true; // flag = true if connected to Internet, flag = false if python and latex environment exists
 };
 
 #endif // TEX2IMG_H

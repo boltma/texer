@@ -17,8 +17,7 @@ TextWidget::TextWidget(QWidget *parent) : QWidget(parent)
 	editor->setMarginType(0, QsciScintilla::NumberMargin);
 	editor->setMarginLineNumbers(0, true);
 	editor->setMarginWidth(0, 25);
-	editor->resize(QSize(840, 320));
-	editor->ensureCursorVisible();
+	editor->resize(QSize(541, 321));
 	editor->setWrapMode(QsciScintilla::WrapWord);
 	editor->setAutoCompletionSource(QsciScintilla::AcsAll);
 	editor->setAutoCompletionCaseSensitivity(true);
@@ -102,7 +101,7 @@ void TextWidget::undo()
 		}
 		else
 		{
-			for (auto k : latex_code[i].nest)
+			for (int k = 0; k < latex_code[i].nest.size(); ++k)
 				if (!nest_stack.isEmpty())
 					nest_stack.pop();
 			if (editor->isUndoAvailable())

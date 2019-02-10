@@ -2,7 +2,6 @@
 #include "latexcode.h"
 #include "mainwindow.h"
 #include "paintwidget.h"
-#include "Tex2Img.h"
 #include "textwidget.h"
 #include "ui_mainwindow.h"
 #include <QClipboard>
@@ -13,13 +12,16 @@
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::MainWindow)
+	ui(new Ui::MainWindow),
+	tex2img(new Tex2Img())
 {
 	ui->setupUi(this);
+	connect(ui->selectionwidget, SIGNAL(on_buttonGroup_buttonClicked(int)), this, SLOT(selectionbutton_clicked(int)));
 }
 
 MainWindow::~MainWindow()
 {
+	delete tex2img;
 	delete ui;
 }
 
@@ -184,9 +186,14 @@ void MainWindow::on_subscript_clicked()
 	scene_update();
 }
 
+void MainWindow::selectionbutton_clicked(int id)
+{
+	tex2img->flag_switch(!static_cast<bool>(id));
+}
+
 void MainWindow::scene_update()
 {
-	Tex2Img t(ui->textwidget->text(), true);
+	tex2img->convert(ui->textwidget->text());
 	scene.clear();
 	scene.addPixmap(QPixmap("tmp.png"));
 	ui->graphicsView->setScene(&scene);

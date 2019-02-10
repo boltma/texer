@@ -16,7 +16,7 @@ public:
     explicit TextWidget(QWidget *parent = nullptr);
     ~TextWidget();
     void clear();
-    void append(const QString &s);
+    void append(const QString &);
 	void insert(const int i);
 	void undo();
 	void jump();

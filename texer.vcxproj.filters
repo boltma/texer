@@ -55,6 +55,9 @@
     <ClCompile Include="latexcode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="selectionwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -64,6 +67,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="textwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="selectionwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Tex2Img.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -84,9 +93,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tex2Img.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="latexcode.h">
       <Filter>Header Files</Filter>
     </ClInclude>

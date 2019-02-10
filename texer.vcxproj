@@ -196,6 +196,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="paintwidget.cpp" />
+    <ClCompile Include="selectionwidget.cpp" />
     <ClCompile Include="Tex2Img.cpp" />
     <ClCompile Include="textwidget.cpp" />
   </ItemGroup>
@@ -204,7 +205,11 @@
     </QtMoc>
     <QtMoc Include="paintwidget.h">
     </QtMoc>
+    <QtMoc Include="Tex2Img.h">
+    </QtMoc>
     <QtMoc Include="textwidget.h">
+    </QtMoc>
+    <QtMoc Include="selectionwidget.h">
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +230,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </CustomBuild>
     <ClInclude Include="latexcode.h" />
-    <ClInclude Include="Tex2Img.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <ItemGroup>

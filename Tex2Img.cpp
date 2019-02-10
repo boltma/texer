@@ -2,7 +2,14 @@
 #include "Tex2Img.h"
 #include <QDebug>
 
-Tex2Img::Tex2Img(const QString &s, bool flag) : s(s), flag(flag)
+Tex2Img::Tex2Img(bool flag) : flag(flag) {}
+
+void Tex2Img::flag_switch(bool flag_input)
+{
+	flag = flag_input;
+}
+
+void Tex2Img::convert(const QString &s)
 {
 	try
 	{

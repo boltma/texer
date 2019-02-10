@@ -32,16 +32,6 @@ border-width: 2px;
 border-color: rgb(0, 0, 0);</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>210</y>
-      <width>301</width>
-      <height>91</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="clearbutton">
     <property name="geometry">
      <rect>
@@ -94,9 +84,9 @@ border-color: rgb(0, 0, 0);</string>
    <widget class="TextWidget" name="textwidget" native="true">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>330</x>
       <y>300</y>
-      <width>841</width>
+      <width>541</width>
       <height>321</height>
      </rect>
     </property>
@@ -192,6 +182,29 @@ border-color: rgb(0, 0, 0);</string>
      <string>下标</string>
     </property>
    </widget>
+   <widget class="SelectionWidget" name="selectionwidget" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>240</y>
+      <width>151</width>
+      <height>61</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="plainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>300</y>
+      <width>301</width>
+      <height>91</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -217,6 +230,12 @@ border-color: rgb(0, 0, 0);</string>
    <class>TextWidget</class>
    <extends>QWidget</extends>
    <header>textwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SelectionWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">selectionwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

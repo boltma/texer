@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "Tex2Img.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
 
@@ -27,10 +28,12 @@ private slots:
 	void on_jumpbutton_clicked();
 	void on_superscript_clicked();
 	void on_subscript_clicked();
+	void selectionbutton_clicked(int);
 
 private:
 	Ui::MainWindow *ui;
 	QGraphicsScene scene;
+	Tex2Img *tex2img;
 	void scene_update();
 	int datacnt = 1;
 	const int datamax = 33;

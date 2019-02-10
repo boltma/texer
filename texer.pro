@@ -30,14 +30,16 @@ SOURCES += \
     paintwidget.cpp \
     textwidget.cpp \
     Tex2img.cpp \
-    latexcode.cpp
+    latexcode.cpp \
+    selectionwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     paintwidget.h \
     textwidget.h \
     Tex2img.h \
-    latexcode.h
+    latexcode.h \
+    selectionwidget.h
 
 FORMS += \
         mainwindow.ui

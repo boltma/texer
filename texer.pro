@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     paintwidget.cpp \
-    textwidget.cpp
+    textwidget.cpp \
+    Tex2img.cpp \
+    latexcode.cpp
 
 HEADERS += \
         mainwindow.h \
     paintwidget.h \
-    textwidget.h
+    textwidget.h \
+    Tex2img.h \
+    latexcode.h
 
 FORMS += \
         mainwindow.ui

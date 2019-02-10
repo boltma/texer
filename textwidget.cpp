@@ -1,6 +1,5 @@
 #include "textwidget.h"
 #include "latexcode.h"
-#include <QString>
 
 TextWidget::TextWidget(QWidget *parent) : QWidget(parent)
 {

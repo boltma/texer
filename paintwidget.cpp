@@ -1,5 +1,4 @@
 #include "paintwidget.h"
-#include <QMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
 

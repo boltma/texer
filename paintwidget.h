@@ -2,6 +2,7 @@
 #define PAINTWIDGET_H
 
 #include <QWidget>
+#include <QMouseEvent>
 
 class PaintWidget : public QWidget
 {

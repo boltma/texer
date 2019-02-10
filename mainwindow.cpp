@@ -1,17 +1,15 @@
 #include <Python.h>
+#include "latexcode.h"
 #include "mainwindow.h"
 #include "paintwidget.h"
-#include "textwidget.h"
-#include "latexcode.h"
 #include "Tex2Img.h"
+#include "textwidget.h"
 #include "ui_mainwindow.h"
-#include <cstdlib>
-#include <QDebug>
-#include <QFile>
-#include <QDir>
-#include <QPixmap>
-#include <QApplication>
 #include <QClipboard>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -36,43 +34,76 @@ void MainWindow::on_clearbutton_clicked()
 
 void MainWindow::on_recbutton_clicked()
 {
-	int label;
+	int label = 0;
 	try
 	{
 		PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
 		Py_Initialize();
 		if (!Py_IsInitialized())
 		{
-			return;
+			PyErr_Print();
+			PyErr_Clear();
+			throw 1;
 		}
 		pName = PyUnicode_DecodeFSDefault("Recognize");
 		pModule = PyImport_Import(pName);
-		PyErr_Print();
 		if (pModule == NULL)
 		{
 			PyErr_Print();
-			std::exit(100);
+			PyErr_Clear();
+			throw 2;
 		}
 		Py_DECREF(pName);
 		pFunc = PyObject_GetAttrString(pModule, "recognize");
 		Py_DECREF(pModule);
-		PyErr_Print();
 		if (!PyCallable_Check(pFunc))
 		{
-			return;
+			PyErr_Print();
+			PyErr_Clear();
+			throw 3;
 		}
 		pArgs = PyTuple_New(0);
 		pValue = PyEval_CallObject(pFunc, pArgs);
+		if (PyErr_Occurred())
+		{
+			PyErr_Print();
+			PyErr_Clear();
+			throw 4;
+		}
 		label = PyLong_AsLong(pValue);
 		Py_DECREF(pValue);
 		Py_DECREF(pArgs);
 		Py_DECREF(pFunc);
 		PyErr_Print();
-		Py_Finalize();
+		//Py_Finalize();
+		// see https://github.com/numpy/numpy/issues/656
+	}
+	catch (int err_code)
+	{
+		qDebug() << "Error embedding python in!";
+		switch (err_code)
+		{
+		case 1:
+			qDebug() << "Unable to initialize" << endl;
+			break;
+		case 2:
+			qDebug() << "Unable to import python function" << endl;
+			break;
+		case 3:
+			qDebug() << "Python function not callable" << endl;
+			break;
+		case 4:
+			qDebug() << "Error calling python function" << endl;
+		}
+		label = -1;
 	}
 	catch (...)
 	{
 		qDebug() << "Error embedding python in!" << endl;
+		label = -1;
+	}
+	if (label == -1)
+	{
 		try
 		{
 			system(R"(set path=Rec;%PATH%)");

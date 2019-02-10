@@ -1,8 +1,6 @@
-#include "Tex2Img.h"
 #include <Python.h>
+#include "Tex2Img.h"
 #include <QDebug>
-#include <QString>
-#include <cstdlib>
 
 Tex2Img::Tex2Img(const QString &s, bool flag) : s(s), flag(flag)
 {
@@ -12,7 +10,9 @@ Tex2Img::Tex2Img(const QString &s, bool flag) : s(s), flag(flag)
 		Py_Initialize();
 		if (!Py_IsInitialized())
 		{
-			return;
+			PyErr_Print();
+			PyErr_Clear();
+			throw 1;
 		}
 		pName = PyUnicode_DecodeFSDefault(flag ? "Tex2Img" : "Tex2Img_offline");
 		pModule = PyImport_Import(pName);
@@ -20,7 +20,8 @@ Tex2Img::Tex2Img(const QString &s, bool flag) : s(s), flag(flag)
 		if (pModule == NULL)
 		{
 			PyErr_Print();
-			std::exit(100);
+			PyErr_Clear();
+			throw 2;
 		}
 		Py_DECREF(pName);
 		pFunc = PyObject_GetAttrString(pModule, flag ? "tex2img" : "tex2img_offline");
@@ -28,7 +29,9 @@ Tex2Img::Tex2Img(const QString &s, bool flag) : s(s), flag(flag)
 		PyErr_Print();
 		if (!PyCallable_Check(pFunc))
 		{
-			return;
+			PyErr_Print();
+			PyErr_Clear();
+			throw 3;
 		}
 		pArgs = PyTuple_New(1);
 		char *temp;
@@ -36,10 +39,35 @@ Tex2Img::Tex2Img(const QString &s, bool flag) : s(s), flag(flag)
 		temp = temp_ba.data(); // temp as c_str for stability
 		PyTuple_SetItem(pArgs, 0, Py_BuildValue("s", temp));
 		PyEval_CallObject(pFunc, pArgs);
+		if (PyErr_Occurred())
+		{
+			PyErr_Print();
+			PyErr_Clear();
+			throw 4;
+		}
 		Py_DECREF(pArgs);
 		Py_DECREF(pFunc);
 		PyErr_Print();
-		Py_Finalize();
+		//Py_Finalize();
+		// see https://github.com/numpy/numpy/issues/656
+	}
+	catch (int err_code)
+	{
+		qDebug() << "Error embedding python in!";
+		switch (err_code)
+		{
+		case 1:
+			qDebug() << "Unable to initialize" << endl;
+			break;
+		case 2:
+			qDebug() << "Unable to import python function" << endl;
+			break;
+		case 3:
+			qDebug() << "Python function not callable" << endl;
+			break;
+		case 4:
+			qDebug() << "Error calling python function" << endl;
+		}
 	}
 	catch (...)
 	{

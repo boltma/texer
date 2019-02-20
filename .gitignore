@@ -392,3 +392,4 @@ test.csv
 train.csv
 my_model.m
 classes.txt
+log.txt

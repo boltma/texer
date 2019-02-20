@@ -10,13 +10,13 @@
 
 class TextWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit TextWidget(QWidget *parent = nullptr);
-    ~TextWidget();
-    void clear();
-    void append(const QString &);
+	explicit TextWidget(QWidget *parent = nullptr);
+	~TextWidget();
+	void clear();
+	void append(const QString &);
 	void insert(const int i);
 	void undo();
 	void jump();
@@ -37,6 +37,7 @@ private:
 	int line;
 	int cursor;
 	bool initialized = false;
+	const QSize size{ 701, 241 };
 };
 
 #endif // TEXTWIDGET_H

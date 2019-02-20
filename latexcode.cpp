@@ -1,6 +1,7 @@
 #include "latexcode.h"
 
 LatexCode latex_code[] = {
+{"\\( \\) ", QVector<int> {3}},
 {"+", QVector<int> {}},
 {"-", QVector<int> {}},
 {"0", QVector<int> {}},
@@ -15,7 +16,20 @@ LatexCode latex_code[] = {
 {"9", QVector<int> {}},
 {"=", QVector<int> {}},
 {"\\alpha ", QVector<int> {}},
+{"\\beta ", QVector<int> {}},
+{"\\cos{} ", QVector<int> {2}},
+{"d", QVector<int> {}},
+{"e", QVector<int> {}},
+{"\\exists ", QVector<int> {}},
+{"\\forall ", QVector<int> {}},
+{"\\gamma ", QVector<int> {}},
+{"\\geq ", QVector<int> {}},
 {"i", QVector<int> {}},
+{"\\infty ", QVector<int> {}},
+{"\\int_{}^{} ", QVector<int> {2, 3}},
+{"\\lambda ", QVector<int> {}},
+{"\\leq ", QVector<int> {}},
+{"\\lim_{} ", QVector<int> {2}},
 {"n", QVector<int> {}},
 {"\\pi ", QVector<int> {}},
 {"\\sin{} ",QVector<int> {2}},
@@ -23,6 +37,8 @@ LatexCode latex_code[] = {
 {"\\sqrt{} ", QVector<int> {2}},
 {"\\sum_{}^{} ", QVector<int> {2, 3}},
 {"\\times ", QVector<int> {}},
+{"x", QVector<int> {}},
+{"y", QVector<int> {}},
 {"_{}", QVector<int> {1}},
 {"^{}", QVector<int> {1}}
 };

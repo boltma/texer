@@ -60,7 +60,7 @@ void Tex2Img::convert(const QString &s)
 	}
 	catch (int err_code)
 	{
-		qDebug() << "Error embedding python in!";
+		qCritical() << "Error embedding python in!";
 		switch (err_code)
 		{
 		case 1:
@@ -78,7 +78,7 @@ void Tex2Img::convert(const QString &s)
 	}
 	catch (...)
 	{
-		qDebug() << "Error embedding python in!" << endl;
+		qCritical() << "Error embedding python in!" << endl;
 		try
 		{
 			// using cmd to embed python in the project
@@ -90,7 +90,7 @@ void Tex2Img::convert(const QString &s)
 		}
 		catch (...)
 		{
-			qDebug() << "Error calling python!" << endl;
+			qFatal("Error calling python!");
 		}
 	}
 }

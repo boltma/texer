@@ -17,7 +17,7 @@ TextWidget::TextWidget(QWidget *parent) : QWidget(parent)
 	editor->setMarginType(0, QsciScintilla::NumberMargin);
 	editor->setMarginLineNumbers(0, true);
 	editor->setMarginWidth(0, 25);
-	editor->resize(QSize(541, 321));
+	editor->resize(size);
 	editor->setWrapMode(QsciScintilla::WrapWord);
 	editor->setAutoCompletionSource(QsciScintilla::AcsAll);
 	editor->setAutoCompletionCaseSensitivity(true);
@@ -36,6 +36,7 @@ TextWidget::~TextWidget()
 
 void TextWidget::cursormoved()
 {
+	// clear all information if cursor moved in editor
 	int temp_line, temp_cursor;
 	editor->getCursorPosition(&temp_line, &temp_cursor);
 	if ((line != temp_line || cursor != temp_cursor) && initialized)
@@ -68,6 +69,10 @@ void TextWidget::clear()
 		line_stack.pop();
 	while (!cursor_stack.isEmpty())
 		cursor_stack.pop();
+	while (!nest_stack.isEmpty())
+		nest_stack.pop();
+	while (!code_stack.isEmpty())
+		code_stack.pop();
 	line_stack.push(0);
 	cursor_stack.push(0);
 }
@@ -96,11 +101,13 @@ void TextWidget::undo()
 		int i = code_stack.pop();
 		if (i == -1)
 		{
+			// last step is jump
 			int last_cursor = cursor_stack.isEmpty() ? 0 : cursor_stack.top();
 			nest_stack.push(cursor - last_cursor);
 		}
 		else
 		{
+			// last step is insert
 			for (int k = 0; k < latex_code[i].nest.size(); ++k)
 				if (!nest_stack.isEmpty())
 					nest_stack.pop();

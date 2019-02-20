@@ -15,12 +15,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow),
 	tex2img(new Tex2Img())
 {
+	qInfo() << "Start Program";
 	ui->setupUi(this);
+	ui->databutton->setVisible(false);
+	ui->plainTextEdit->setVisible(false);
+	timer_cnt = 0;
+	timer = new QTimer(this);
+	timer->start(100); // check if mouse on databutton region every 100 milliseconds
+	connect(timer, SIGNAL(timeout()), this, SLOT(on_timeout()));
 	connect(ui->selectionwidget, SIGNAL(on_buttonGroup_buttonClicked(int)), this, SLOT(selectionbutton_clicked(int)));
 }
 
 MainWindow::~MainWindow()
 {
+	qInfo() << "End Program";
+	delete timer;
 	delete tex2img;
 	delete ui;
 }
@@ -82,7 +91,7 @@ void MainWindow::on_recbutton_clicked()
 	}
 	catch (int err_code)
 	{
-		qDebug() << "Error embedding python in!";
+		qCritical() << "Error embedding python in!";
 		switch (err_code)
 		{
 		case 1:
@@ -101,14 +110,14 @@ void MainWindow::on_recbutton_clicked()
 	}
 	catch (...)
 	{
-		qDebug() << "Error embedding python in!" << endl;
+		qCritical() << "Error embedding python in!" << endl;
 		label = -1;
 	}
 	if (label == -1)
 	{
 		try
 		{
-			system(R"(set path=Rec;%PATH%)");
+			system(R"(set path=Recognition;%PATH%)");
 			system(R"(python "recognize.py" > tempresult.txt)");
 			QFile file("tempresult.txt");
 			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -118,7 +127,8 @@ void MainWindow::on_recbutton_clicked()
 		}
 		catch (...)
 		{
-			qDebug() << "Error calling python!" << endl;
+			qFatal("Error calling python!");
+			exit(1);
 		}
 	}
 	ui->textwidget->insert(label);
@@ -189,6 +199,32 @@ void MainWindow::on_subscript_clicked()
 void MainWindow::selectionbutton_clicked(int id)
 {
 	tex2img->flag_switch(!static_cast<bool>(id));
+}
+
+
+void MainWindow::on_timeout()
+{
+	mousePos = QCursor::pos();
+	mousePos = mapFromGlobal(mousePos); // Translates the global screen coordinate pos to widget coordinates.
+	if (!easterEgg)
+	{
+		// qDebug() << ui->plainTextEdit->geometry() << mousePos;
+		if (ui->plainTextEdit->geometry().contains(mousePos))
+		{
+			++timer_cnt;
+			if (timer_cnt == 10)
+			{
+				ui->databutton->setVisible(true);
+				ui->plainTextEdit->setVisible(true);
+				easterEgg = true;
+				timer->stop();
+			}
+		}
+		else
+		{
+			timer_cnt = 0;
+		}
+	}
 }
 
 void MainWindow::scene_update()

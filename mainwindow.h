@@ -4,6 +4,7 @@
 #include "Tex2Img.h"
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QTimer>
 
 namespace Ui {
 	class MainWindow;
@@ -29,6 +30,7 @@ private slots:
 	void on_superscript_clicked();
 	void on_subscript_clicked();
 	void selectionbutton_clicked(int);
+	void on_timeout();
 
 private:
 	Ui::MainWindow *ui;
@@ -37,6 +39,10 @@ private:
 	void scene_update();
 	int datacnt = 1;
 	const int datamax = 33;
+	QTimer *timer; // show databutton if mouse put on data button region for 1 sec
+	QPoint mousePos;
+	bool easterEgg = false; // databutton shown
+	int timer_cnt;
 };
 
 #endif // MAINWINDOW_H

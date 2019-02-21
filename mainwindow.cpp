@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	qInfo() << "Start Program";
 	ui->setupUi(this);
+	this->setWindowTitle("Texer");
 	ui->databutton->setVisible(false);
 	ui->plainTextEdit->setVisible(false);
 	timer_cnt = 0;
@@ -95,16 +96,16 @@ void MainWindow::on_recbutton_clicked()
 		switch (err_code)
 		{
 		case 1:
-			qDebug() << "Unable to initialize" << endl;
+			qDebug() << "Unable to initialize";
 			break;
 		case 2:
-			qDebug() << "Unable to import python function" << endl;
+			qDebug() << "Unable to import python function";
 			break;
 		case 3:
-			qDebug() << "Python function not callable" << endl;
+			qDebug() << "Python function not callable";
 			break;
 		case 4:
-			qDebug() << "Error calling python function" << endl;
+			qDebug() << "Error calling python function";
 		}
 		label = -1;
 	}
@@ -138,7 +139,7 @@ void MainWindow::on_recbutton_clicked()
 
 void MainWindow::on_copybutton_clicked()
 {
-	QApplication::clipboard()->setPixmap(QPixmap("tmp.png"));
+	QApplication::clipboard()->setImage(QImage("tmp.png")); // fix bug of copying to softwares such as Word
 }
 
 void MainWindow::on_databutton_clicked()
@@ -212,7 +213,7 @@ void MainWindow::on_timeout()
 		if (ui->plainTextEdit->geometry().contains(mousePos))
 		{
 			++timer_cnt;
-			if (timer_cnt == 10)
+			if (timer_cnt == 100)
 			{
 				ui->databutton->setVisible(true);
 				ui->plainTextEdit->setVisible(true);

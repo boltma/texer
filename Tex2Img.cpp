@@ -64,16 +64,16 @@ void Tex2Img::convert(const QString &s)
 		switch (err_code)
 		{
 		case 1:
-			qDebug() << "Unable to initialize" << endl;
+			qDebug() << "Unable to initialize";
 			break;
 		case 2:
-			qDebug() << "Unable to import python function" << endl;
+			qDebug() << "Unable to import python function";
 			break;
 		case 3:
-			qDebug() << "Python function not callable" << endl;
+			qDebug() << "Python function not callable";
 			break;
 		case 4:
-			qDebug() << "Error calling python function" << endl;
+			qDebug() << "Error calling python function";
 		}
 	}
 	catch (...)

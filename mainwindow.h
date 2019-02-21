@@ -39,7 +39,7 @@ private:
 	void scene_update();
 	int datacnt = 1;
 	const int datamax = 33;
-	QTimer *timer; // show databutton if mouse put on data button region for 1 sec
+	QTimer *timer; // show databutton if mouse put on data button region for 10 sec
 	QPoint mousePos;
 	bool easterEgg = false; // databutton shown
 	int timer_cnt;

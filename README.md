@@ -22,4 +22,6 @@ Recognition overfits the author's personal handwriting because it is trained by 
 
 The current release version has to be run as administrator because it writes to temp files in its own directory.
 
+Temp files have to be removed manually in uninstallation.
+
 There are bugs in memory management, but I have no idea how to fix it. (Python couldn't be correctly finalized while using numpy, see https://github.com/numpy/numpy/issues/656.) Other memory issues may exist as well.

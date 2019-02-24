@@ -5,7 +5,7 @@
 PaintWidget::PaintWidget(QWidget *parent) : QWidget(parent)
 {
 	pix = QPixmap(200, 200);
-	pix.fill(Qt::white);
+	pix.fill(QColor(255, 255, 255, 150));
 }
 
 void PaintWidget::paintEvent(QPaintEvent *e)
@@ -53,6 +53,6 @@ void PaintWidget::clear()
 	Pos = QPoint(0, 0);
 	lastPos = QPoint(0, 0); // clear point on Pos
 	pix = QPixmap(200, 200);
-	pix.fill(Qt::white);
+	pix.fill(QColor(255, 255, 255, 150));
 	update();
 }

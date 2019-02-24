@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QButtonGroup>
+#include <QCheckBox>
 #include <QRadioButton>
 #include <QVBoxLayout>
 
@@ -16,12 +17,15 @@ public:
 
 signals:
 	void on_buttonGroup_buttonClicked(int);
+	void on_buttonGroup2_buttonClicked(int);
 
 private:
-	QButtonGroup *buttonGroup;
-	QRadioButton *online;
-	QRadioButton *offline;
-	QVBoxLayout *layout;
+	QButtonGroup *buttonGroup, *buttonGroup2;
+	QRadioButton *online, *offline;
+	QRadioButton *rf, *nn;
+	QCheckBox *symbolOnly;
+	QVBoxLayout *layout, *layout2;
+	QHBoxLayout *layoutMain;
 };
 
 #endif // SELECTIONWIDGET_H

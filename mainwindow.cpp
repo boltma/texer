@@ -1,4 +1,5 @@
 #include <Python.h>
+#include "aero.h"
 #include "latexcode.h"
 #include "mainwindow.h"
 #include "paintwidget.h"
@@ -17,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	qInfo() << "Start Program";
 	ui->setupUi(this);
-	this->setWindowTitle("Texer");
 	ui->databutton->setVisible(false);
 	ui->plainTextEdit->setVisible(false);
 	timer_cnt = 0;
@@ -25,6 +25,38 @@ MainWindow::MainWindow(QWidget *parent) :
 	timer->start(100); // check if mouse on databutton region every 100 milliseconds
 	connect(timer, SIGNAL(timeout()), this, SLOT(on_timeout()));
 	connect(ui->selectionwidget, SIGNAL(on_buttonGroup_buttonClicked(int)), this, SLOT(selectionbutton_clicked(int)));
+
+	// translucent graphicsView
+	scene.setBackgroundBrush(QBrush(QColor(255, 255, 255, 128)));
+	ui->graphicsView->setScene(&scene);
+	ui->graphicsView->setStyleSheet("background: transparent");
+
+	QPixmap pixmap(32, 32);
+	pixmap.fill(Qt::transparent);
+	setWindowIcon(QIcon(pixmap));
+	setWindowTitle("\n");
+
+	// aero
+	setAttribute(Qt::WA_TranslucentBackground);
+
+	HWND hwnd = (HWND)this->winId();
+	DWORD style = ::GetWindowLong(hwnd, GWL_STYLE);
+	::SetWindowLong(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME | WS_CAPTION | WS_EX_LAYERED);
+
+	HMODULE hUser = GetModuleHandle(L"user32.dll");
+	if (hUser)
+	{
+		pfnSetWindowCompositionAttribute setWindowCompositionAttribute = (pfnSetWindowCompositionAttribute)GetProcAddress(hUser, "SetWindowCompositionAttribute");
+		if (setWindowCompositionAttribute)
+		{
+			ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
+			WINDOWCOMPOSITIONATTRIBDATA data;
+			data.Attrib = WCA_ACCENT_POLICY;
+			data.pvData = &accent;
+			data.cbData = sizeof(accent);
+			setWindowCompositionAttribute(hwnd, &data);
+		}
+	}
 }
 
 MainWindow::~MainWindow()
@@ -40,7 +72,8 @@ void MainWindow::on_clearbutton_clicked()
 	ui->plainTextEdit->clear();
 	ui->textwidget->clear();
 	ui->paintwidget->clear();
-	MainWindow::scene.clear();
+	scene.clear();
+	scene.setBackgroundBrush(QBrush(QColor(255, 255, 255, 128)));
 	QFile::remove("temp.png");
 }
 
@@ -232,7 +265,7 @@ void MainWindow::scene_update()
 {
 	tex2img->convert(ui->textwidget->text());
 	scene.clear();
+	scene.setBackgroundBrush(QBrush(QColor(255, 255, 255, 200))); // add opacity when showing
 	scene.addPixmap(QPixmap("tmp.png"));
-	ui->graphicsView->setScene(&scene);
 	ui->graphicsView->show();
 }

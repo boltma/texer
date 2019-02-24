@@ -22,6 +22,26 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton
+{
+   	border:2px groove gray;
+	background-color: rgb(214, 219, 233);
+	padding:2px, 4px;
+}
+QPushButton:hover:!pressed
+{
+   	border:2px groove gray;
+	background-color: rgb(253, 254, 191);
+	padding:2px, 4px;
+}
+QPushButton:pressed
+{
+   	border:2px groove gray;
+	background-color: rgb(255, 242, 157);
+	padding:2px, 4px;
+}</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="PaintWidget" name="paintwidget" native="true">
     <property name="geometry">
@@ -33,9 +53,9 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-style: solid;
-border-width: 2px;
-border-color: rgb(0, 0, 0);</string>
+     <string notr="true">border-style: double;
+border-width: 5px;
+border-color: rgb(100, 100, 100);</string>
     </property>
    </widget>
    <widget class="QPushButton" name="clearbutton">
@@ -60,6 +80,9 @@ border-color: rgb(0, 0, 0);</string>
       <height>31</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
     <property name="text">
      <string>识别</string>
     </property>
@@ -72,6 +95,9 @@ border-color: rgb(0, 0, 0);</string>
       <width>1001</width>
       <height>301</height>
      </rect>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="copybutton">
@@ -131,6 +157,9 @@ border-color: rgb(0, 0, 0);</string>
       <width>81</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>重写</string>
@@ -196,7 +225,7 @@ border-color: rgb(0, 0, 0);</string>
      <rect>
       <x>30</x>
       <y>240</y>
-      <width>151</width>
+      <width>301</width>
       <height>61</height>
      </rect>
     </property>

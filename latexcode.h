@@ -8,7 +8,8 @@ struct LatexCode
 {
 	QString code;
 	QVector<int> nest;
-} latex_code[];
+};
+extern LatexCode latex_code[];
 extern int cnt_code;
 
 #endif // LATEXCODE_H

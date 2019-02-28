@@ -2,11 +2,10 @@
 Generates Latex code from handwritten math symbols and outputs images.
 
 QTDIR and Python Directory in project file should be modified before compile.  
-You may now use texer.pro to run qmake and make. (change PYTHON_PATH under texer.pro)
+You may now use texer.pro to run qmake and make. (change PYTHON_PATH under texer.pro and run `qmake texer.pro`, `make` and `make install`)
 
 ## Install Python Dependencies
-The program requires a python environment. It is tested on python 3.6.8 (32-bit). (The model inside the release version works only on 32-bit python)
-
+The program requires a python environment. It is tested on python 3.6.8 (32-bit). (The model inside the release version works only on 32-bit python)  
 Run `pip install -r requirements.txt` to install python dependencies. (Under the installed directory if using the release version.)
 
 ## Easter Egg

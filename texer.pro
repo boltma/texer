@@ -45,17 +45,21 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-CONFIG(release, debug|release): DESTDIR = $$INSTALL_ROOT/release
-CONFIG(debug, debug|release): DESTDIR = $$INSTALL_ROOT/debug
+CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/release
+CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/debug
 
 PYTHON_FILES.files += \
-    $$PWD\Recognize.py \
+    Recognize.py \
     Tex2Img.py \
-    Tex2Img_offline.py \
-    latex.api
+    Tex2Img_offline.py
 PYTHON_FILES.path = $$DESTDIR
 
-INSTALLS += PYTHON_FILES
+CONFIG_FILES.files += \
+    latex.api \
+    my_model.m
+CONFIG_FILES.path = $$OUT_PWD
+
+INSTALLS += PYTHON_FILES CONFIG_FILES
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

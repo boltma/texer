@@ -388,8 +388,7 @@ CMakeLists.txt.user*
 temp.png
 tmp.png
 tempresult.txt
-test.csv
-train.csv
-my_model.m
-classes.txt
+test*.csv
+train*.csv
+Recognition/*_model*.m
 log.txt

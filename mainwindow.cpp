@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	timer->start(100); // check if mouse on databutton region every 100 milliseconds
 	connect(timer, SIGNAL(timeout()), this, SLOT(on_timeout()));
 	connect(ui->selectionwidget, SIGNAL(on_buttonGroup_buttonClicked(int)), this, SLOT(selectionbutton_clicked(int)));
+	connect(ui->selectionwidget, SIGNAL(on_buttonGroup2_buttonClicked(int)), this, SLOT(selectionbutton2_clicked(int)));
+	connect(ui->selectionwidget, SIGNAL(on_symbolOnly_stateChanged(int)), this, SLOT(checkbox_statechanged(int)));
 
 	// translucent graphicsView
 	scene.setBackgroundBrush(QBrush(QColor(255, 255, 255, 128)));
@@ -107,7 +109,9 @@ void MainWindow::on_recbutton_clicked()
 			PyErr_Clear();
 			throw 3;
 		}
-		pArgs = PyTuple_New(0);
+		pArgs = PyTuple_New(2);
+		PyTuple_SetItem(pArgs, 0, Py_BuildValue("s", cl_name[cl]));
+		PyTuple_SetItem(pArgs, 1, Py_BuildValue("O", symbolOnly ? Py_True : Py_False));
 		pValue = PyEval_CallObject(pFunc, pArgs);
 		if (PyErr_Occurred())
 		{
@@ -120,12 +124,12 @@ void MainWindow::on_recbutton_clicked()
 		Py_DECREF(pArgs);
 		Py_DECREF(pFunc);
 		PyErr_Print();
-		//Py_Finalize();
+		// Py_Finalize();
 		// see https://github.com/numpy/numpy/issues/656
 	}
 	catch (int err_code)
 	{
-		qCritical() << "Error embedding python in!";
+		qCritical() << "Recognize error embedding python in!";
 		switch (err_code)
 		{
 		case 1:
@@ -144,15 +148,19 @@ void MainWindow::on_recbutton_clicked()
 	}
 	catch (...)
 	{
-		qCritical() << "Error embedding python in!" << endl;
+		qCritical() << "Recognize error embedding python in!" << endl;
 		label = -1;
 	}
 	if (label == -1)
 	{
 		try
 		{
-			system(R"(set path=Recognition;%PATH%)");
-			system(R"(python "recognize.py" > tempresult.txt)");
+			QString cmd = R"(python recognize.py )";
+			cmd += cl_name[cl];
+			cmd += ' ';
+			cmd += (symbolOnly ? "1" : "\"\"");
+			cmd += " > tempresult.txt || pause";
+			system(cmd.toStdString().c_str()); // || such that the console window stops if error occurs
 			QFile file("tempresult.txt");
 			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 				return;
@@ -233,6 +241,16 @@ void MainWindow::on_subscript_clicked()
 void MainWindow::selectionbutton_clicked(int id)
 {
 	tex2img->flag_switch(!static_cast<bool>(id));
+}
+
+void MainWindow::selectionbutton2_clicked(int id)
+{
+	cl = static_cast<classifier>(id);
+}
+
+void MainWindow::checkbox_statechanged(int state)
+{
+	symbolOnly = static_cast<bool>(state);
 }
 
 

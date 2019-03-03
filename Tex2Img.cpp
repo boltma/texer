@@ -11,6 +11,7 @@ void Tex2Img::flag_switch(bool flag_input)
 
 void Tex2Img::convert(const QString &s)
 {
+	bool embedSuccess = false;
 	try
 	{
 		PyObject *pName, *pModule, *pFunc, *pArgs;
@@ -23,7 +24,6 @@ void Tex2Img::convert(const QString &s)
 		}
 		pName = PyUnicode_DecodeFSDefault(flag ? "Tex2Img" : "Tex2Img_offline");
 		pModule = PyImport_Import(pName);
-		PyErr_Print();
 		if (pModule == NULL)
 		{
 			PyErr_Print();
@@ -33,7 +33,6 @@ void Tex2Img::convert(const QString &s)
 		Py_DECREF(pName);
 		pFunc = PyObject_GetAttrString(pModule, flag ? "tex2img" : "tex2img_offline");
 		Py_DECREF(pModule);
-		PyErr_Print();
 		if (!PyCallable_Check(pFunc))
 		{
 			PyErr_Print();
@@ -55,12 +54,13 @@ void Tex2Img::convert(const QString &s)
 		Py_DECREF(pArgs);
 		Py_DECREF(pFunc);
 		PyErr_Print();
-		//Py_Finalize();
+		// Py_Finalize();
 		// see https://github.com/numpy/numpy/issues/656
+		embedSuccess = true;
 	}
 	catch (int err_code)
 	{
-		qCritical() << "Error embedding python in!";
+		qCritical() << "Tex2Img error embedding python in!";
 		switch (err_code)
 		{
 		case 1:
@@ -78,11 +78,15 @@ void Tex2Img::convert(const QString &s)
 	}
 	catch (...)
 	{
-		qCritical() << "Error embedding python in!" << endl;
+		qCritical() << "Tex2Img error embedding python in!" << endl;
+
+	}
+	if (!embedSuccess)
+	{
 		try
 		{
 			// using cmd to embed python in the project
-			QString cmd = "python " + (flag ? QString("tex2img") : QString("tex2img_offline")) + ".py \"" + s + '"';
+			QString cmd = "python " + (flag ? QString("tex2img") : QString("tex2img_offline")) + ".py \"" + s + "\" || pause"; // pause if fails
 			char *temp;
 			QByteArray temp_ba = cmd.toLatin1();
 			temp = temp_ba.data();

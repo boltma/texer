@@ -18,6 +18,7 @@ public:
 signals:
 	void on_buttonGroup_buttonClicked(int);
 	void on_buttonGroup2_buttonClicked(int);
+	void on_symbolOnly_stateChanged(int);
 
 private:
 	QButtonGroup *buttonGroup, *buttonGroup2;

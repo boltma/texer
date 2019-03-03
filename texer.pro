@@ -56,7 +56,10 @@ PYTHON_FILES.path = $$DESTDIR
 
 CONFIG_FILES.files += \
     latex.api \
-    my_model.m
+    RF_model_0.m \
+    RF_model_1.m \
+    NN_model_0.m \
+    NN_model_1.m
 CONFIG_FILES.path = $$OUT_PWD
 
 INSTALLS += PYTHON_FILES CONFIG_FILES

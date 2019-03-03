@@ -16,6 +16,7 @@ SelectionWidget::SelectionWidget(QWidget *parent) : QWidget(parent)
 	buttonGroup2->addButton(nn, 1);
 	rf->setChecked(true);
 	symbolOnly = new QCheckBox("Symbol Only", this);
+	symbolOnly->setChecked(true);
 
 	layout = new QVBoxLayout;
 	layout->addWidget(online);
@@ -30,9 +31,9 @@ SelectionWidget::SelectionWidget(QWidget *parent) : QWidget(parent)
 	layoutMain->setContentsMargins(QMargins(0, 5, 0, 5));
 	setLayout(layoutMain);
 
-	// send signal to MainWindow, then to tex2img
-	connect(buttonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(on_buttonGroup_buttonClicked(int)));
+	connect(buttonGroup, SIGNAL(buttonClicked(int)), this, SIGNAL(on_buttonGroup_buttonClicked(int))); // send signal to MainWindow, then to tex2img
 	connect(buttonGroup2, SIGNAL(buttonClicked(int)), this, SIGNAL(on_buttonGroup2_buttonClicked(int)));
+	connect(symbolOnly, SIGNAL(stateChanged(int)), this, SIGNAL(on_symbolOnly_stateChanged(int)));
 }
 
 SelectionWidget::~SelectionWidget()

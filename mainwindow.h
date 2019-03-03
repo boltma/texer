@@ -10,6 +10,8 @@ namespace Ui {
 	class MainWindow;
 }
 
+enum classifier { RF, NN };
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -30,12 +32,17 @@ private slots:
 	void on_superscript_clicked();
 	void on_subscript_clicked();
 	void selectionbutton_clicked(int);
+	void selectionbutton2_clicked(int);
+	void checkbox_statechanged(int);
 	void on_timeout();
 
 private:
 	Ui::MainWindow *ui;
 	QGraphicsScene scene;
 	Tex2Img *tex2img;
+	classifier cl = RF;
+	const char* cl_name[2] = { "RF", "NN" };
+	bool symbolOnly = true;
 	void scene_update();
 	int datacnt = 1;
 	const int datamax = 33;

@@ -1,11 +1,13 @@
 import os
+import sys
 import numpy as np
 from sklearn.externals import joblib
 from PIL import Image
 
 
-def recognize():
-    model = joblib.load("my_model.m")
+def recognize(classifier='RF', symbol_only=True):
+    name = classifier + '_model_' + str(int(symbol_only)) + '.m'
+    model = joblib.load(name)
     cwd = os.getcwd()
     img_path = cwd + r'\\temp.png'
     img = Image.open(img_path)
@@ -18,4 +20,4 @@ def recognize():
 
 
 if __name__ == "__main__":
-    print(recognize())
+    print(recognize(sys.argv[1], bool(sys.argv[2])))

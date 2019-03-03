@@ -4,10 +4,10 @@ import numpy as np
 import csv
 
 
-def make_dataset(flag):
+def make_dataset(flag, symbol_only):
     cwd = r'data\\'
     classes = os.listdir(cwd)
-    f = open(flag + ".csv", "w", newline="")
+    f = open(flag + "_" + str(int(symbol_only is True)) + ".csv", "w", newline="")
     writer = csv.writer(f)
     if flag == "train":
         column_name = ["label"]
@@ -17,6 +17,8 @@ def make_dataset(flag):
     writer.writerow(column_name)
 
     for index, name in enumerate(classes):
+        if symbol_only and name.isalnum() and len(name) == 1:
+            continue
         class_path = cwd + name + '\\'
         cnt = 0
         for img_name in os.listdir(class_path):
@@ -43,5 +45,7 @@ def make_dataset(flag):
 
 
 if __name__ == "__main__":
-    make_dataset("test")
-    make_dataset("train")
+    make_dataset("test", True)
+    make_dataset("train", True)
+    make_dataset("test", False)
+    make_dataset("train", False)

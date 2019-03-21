@@ -392,3 +392,6 @@ test*.csv
 train*.csv
 Recognition/*_model*.m
 log.txt
+build
+dist
+*.spec

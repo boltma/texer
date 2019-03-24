@@ -15,17 +15,17 @@ def train(classifier, symbol_only):
     # data_test = pd.read_csv('test.csv', header=0, dtype=np.int)
     if classifier == 'RF':
         if symbol_only:
-            model = RandomForestClassifier(n_estimators=100, criterion='entropy', min_samples_split=2,
+            model = RandomForestClassifier(n_estimators=300, criterion='entropy', min_samples_split=2,
                                            min_impurity_decrease=1e-7)
         else:
-            model = RandomForestClassifier(n_estimators=100, criterion='entropy', min_samples_split=2,
-                                           min_impurity_decrease=1e-10)
+            model = RandomForestClassifier(n_estimators=300, criterion='entropy', min_samples_split=2,
+                                           min_impurity_decrease=1e-7)
     elif classifier == 'NN':
         if symbol_only:
-            model = MLPClassifier(solver='adam', alpha=1e-3, max_iter=1000, activation='logistic', verbose=True,
+            model = MLPClassifier(solver='lbfgs', alpha=1e-3, max_iter=1000, activation='logistic', verbose=True,
                                   hidden_layer_sizes=(200, 100), random_state=1)
         else:
-            model = MLPClassifier(solver='adam', alpha=1e-4, max_iter=1000, activation='logistic', verbose=True,
+            model = MLPClassifier(solver='lbfgs', alpha=1e-3, max_iter=1000, activation='logistic', verbose=True,
                                   hidden_layer_sizes=(500, 200), random_state=1)
     model.fit(x_train, y_train)
     y_train_pred = model.predict(x_train)
